@@ -1,0 +1,115 @@
+version: '3.4'
+
+services:
+  sqlestateagentbookingdata:
+    image:  mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=PaSSw0rdPaSSw0rd
+      - ACCEPT_EULA=Y
+    container_name: sqlestateagentbookingdata
+    ports:
+      - "1401:1433"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.201
+
+  sqlestateagentbuyerdata:
+    image:  mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=PaSSw0rdPaSSw0rd
+      - ACCEPT_EULA=Y
+    container_name: sqlestateagentbuyerdata
+    ports:
+      - "1402:1433"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.202
+
+  sqlestateagentpropertydata:
+    image:  mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=PaSSw0rdPaSSw0rd
+      - ACCEPT_EULA=Y
+    container_name: sqlestateagentpropertydata
+    ports:
+      - "1403:1433"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.203
+
+  sqlestateagentsellerdata:
+    image:  mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=PaSSw0rdPaSSw0rd
+      - ACCEPT_EULA=Y
+    container_name: sqlestateagentsellerdata
+    ports:
+      - "1404:1433"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.204
+
+  buyerservice:
+    image: ${DOCKER_REGISTRY-}buyerservice
+    environment:
+        - ConnectionString=sqlestateagentdata
+    build:
+      context: .
+      dockerfile: BuyerService/Dockerfile
+    container_name: buyerservice
+    ports:
+    - "3011:3011"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.211
+
+  sellerservice:
+    image: ${DOCKER_REGISTRY-}sellerservice
+    build:
+      context: .
+      dockerfile: SellerService/Dockerfile
+    container_name: sellerservice
+    ports:
+    - "3013:3013"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.213
+
+  propertyservice:
+    image: ${DOCKER_REGISTRY-}propertyservice
+    environment:
+        - ConnectionString=sqlestateagentdata
+    build:
+      context: .
+      dockerfile: PropertyService/Dockerfile
+    container_name: propertyservice
+    ports:
+    - "3012:3012"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.212
+
+  bookingservice:
+    image: ${DOCKER_REGISTRY-}bookingservice
+    environment:
+        - ConnectionString=sqlestateagentdata
+    build:
+      context: .
+      dockerfile: BookingService/Dockerfile
+    container_name: bookingservice
+    ports:
+    - "3010:3010"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.19.10.210
+
+networks:
+    EstateAgentMicroservicenetwork:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.19.0.0/16
+
+
+
