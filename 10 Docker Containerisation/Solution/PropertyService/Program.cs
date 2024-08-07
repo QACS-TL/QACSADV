@@ -5,6 +5,17 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; //Needed for Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                policy =>
+                {
+                    //policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+});
+
 // Add services to the container.
 //builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -76,7 +87,7 @@ app.MapDelete("/Properties/{id}", async (int id, PropertyContext db) =>
         await db.SaveChangesAsync();
 
         var http = new HttpClient();
-        string url = $"https://localhost:3010/bookingsByPropertyId/{id}";
+        string url = $"http://bookingservice:3010/bookingsByPropertyId/{id}";
         HttpResponseMessage response = await http.DeleteAsync(url);
 
         return response.IsSuccessStatusCode ? Results.NoContent() : Results.NotFound(); // Results.NoContent();

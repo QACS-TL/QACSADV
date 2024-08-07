@@ -5,11 +5,22 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; //Needed for Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                policy =>
+                {
+                    //policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+});
+
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddControllers();
-
+//ADD CORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 builder.Services.AddDbContext<BookingContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("sqlestateagentdata")));
@@ -43,7 +54,7 @@ app.MapPost("/bookings", async (Booking booking, BookingContext db) =>
     var http = new HttpClient();
 
     //Check to see if PropertyId is valid
-    string url = $"https://localhost:3012/properties/{booking.PropertyId}";
+    string url = $"http://propertyservice:3012/properties/{booking.PropertyId}";
     HttpResponseMessage response = await http.GetAsync(url);
     string responseJson = response.Content.ReadAsStringAsync().Result;
     dynamic responseData = JsonConvert.DeserializeObject(responseJson);
@@ -51,7 +62,7 @@ app.MapPost("/bookings", async (Booking booking, BookingContext db) =>
         return Results.NotFound();
 
     //Check to see if BuyerId is valid
-    url = $"https://localhost:3011/api/buyer/buyers/{booking.BuyerId}";
+    url = $"http://buyerservice:3011/api/Buyer/buyers/{booking.BuyerId}";
     response = await http.GetAsync(url);
     responseJson = response.Content.ReadAsStringAsync().Result;
     responseData = JsonConvert.DeserializeObject(responseJson);

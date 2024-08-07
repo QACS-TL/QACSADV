@@ -37,17 +37,17 @@ services:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.19.10.203
 
-  sqlestateagentsellerdata:
-    image:  mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - SA_PASSWORD=PaSSw0rdPaSSw0rd
-      - ACCEPT_EULA=Y
-    container_name: sqlestateagentsellerdata
-    ports:
-      - "1404:1433"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.204
+  # sqlestateagentsellerdata:
+  #   image:  mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
+  #     - ACCEPT_EULA=Y
+  #   container_name: sqlestateagentsellerdata
+  #   ports:
+  #     - "1404:1433"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.204
 
   buyerservice:
     image: ${DOCKER_REGISTRY-}buyerservice
@@ -63,17 +63,17 @@ services:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.19.10.211
 
-  sellerservice:
-    image: ${DOCKER_REGISTRY-}sellerservice
-    build:
-      context: .
-      dockerfile: SellerService/Dockerfile
-    container_name: sellerservice
-    ports:
-    - "3013:3013"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.213
+  # sellerservice:
+  #   image: ${DOCKER_REGISTRY-}sellerservice
+  #   build:
+  #     context: .
+  #     dockerfile: SellerService/Dockerfile
+  #   container_name: sellerservice
+  #   ports:
+  #   - "3013:3013"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.213
 
   propertyservice:
     image: ${DOCKER_REGISTRY-}propertyservice

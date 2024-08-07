@@ -5,7 +5,7 @@ USER app
 WORKDIR /app
 #EXPOSE 8080
 #EXPOSE 8081
-ENV DOTNET_URLS=https://+:3011
+ENV DOTNET_URLS=http://+:3011
 EXPOSE 3011
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
