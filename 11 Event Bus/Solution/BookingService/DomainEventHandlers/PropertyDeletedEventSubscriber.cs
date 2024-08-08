@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace BookingService.DomainEventHandlers
 {
-    public class PropertyDeletedEventSubscriber
+    public class PropertyDeletedEventSubscriber: ICapSubscribe
     {
         private readonly BookingContext _bookingContext;
 
@@ -24,7 +24,7 @@ namespace BookingService.DomainEventHandlers
             if (bookings is null || bookings.Count() == 0)
                 return Results.NotFound();
             _bookingContext.Bookings.RemoveRange(bookings);
-            _bookingContext.SaveChanges();
+            await _bookingContext.SaveChangesAsync();
             return Results.NoContent();
 
         }

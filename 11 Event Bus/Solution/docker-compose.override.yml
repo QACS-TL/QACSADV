@@ -44,8 +44,10 @@ services:
   bookingservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTPS_PORTS=3010
+      - ASPNETCORE_HTTP_PORTS=3010
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+    depends_on:
+      - rabbitmq
     ports:
       - "3010"
     volumes:

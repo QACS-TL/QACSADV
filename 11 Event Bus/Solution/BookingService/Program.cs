@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using BookingService.Infrastructure;
 using BookingService.Models;
 using Newtonsoft.Json;
+using BookingService.DomainEventHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,9 @@ builder.Services.AddCap(options =>
         };
     });
 });
+
+builder.Services.AddScoped<PropertyDeletedEventSubscriber>();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 

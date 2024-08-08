@@ -27,7 +27,7 @@ builder.Services.AddCap(options =>
     {
         d.AllowAnonymousExplicit = true;
     });
-
+   
     options.UseRabbitMQ(options =>
     {
         options.ConnectionFactoryOptions = options =>
@@ -40,6 +40,8 @@ builder.Services.AddCap(options =>
         };
     });
 });
+
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
