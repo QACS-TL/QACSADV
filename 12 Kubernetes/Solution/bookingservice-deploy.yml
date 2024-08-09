@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookingservice-deploy
+  labels:
+    app: bookingservice
+spec:
+  replicas: 1
+  #strategy:
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #      maxSurge: 1
+  #      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: bookingservice
+    spec:
+      containers:
+      - name: bookingservice
+        image: pbehague/bookingservice:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4010
+        env:
+         - name: ASPNETCORE_URLS
+           value: http://*:4010
+    selector:
+        matchLabels:
+          app: bookingservice
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookingservice
+spec:
+  type: NodePort
+  ports:
+  - port: 4010
+  targetPort: 4010
+  nodePort: 34010
+  selector:
+    app: bookingservice

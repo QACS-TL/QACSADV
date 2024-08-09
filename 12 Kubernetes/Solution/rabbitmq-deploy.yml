@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+  # Add labels and annotations as per your requirements
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq  # Replace with your custom Docker image
+          ports:
+            - name: amqp
+              containerPort: 5672
+              protocol: TCP
+            - name: http
+              containerPort: 15672
+              protocol: TCP
+            - name: prometheus
+              containerPort: 15692
+              protocol: TCP
+          livenessProbe:
+              exec:
+                command:
+                - rabbitmq-diagnostics
+                - status
+              initialDelaySeconds: 60
+              periodSeconds: 60
+              timeoutSeconds: 15
+          readinessProbe:
+              exec:
+                command:
+                - rabbitmq-diagnostics
+                - ping
+              initialDelaySeconds: 20
+              periodSeconds: 60
+              timeoutSeconds: 10
+          volumeMounts:
+            - name: rabbitmq-config
+              mountPath: /etc/rabbitmq
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq/mnesia
+      volumes:
+        - name: rabbitmq-config
+          configMap:
+            name: rabbitmq-cofigmap 
+# Specify the name of the PVC to be used for RabbitMQ data
+  volumeClaimTemplates:
+    - metadata:
+        name: rabbitmq-data
+      spec:
+        accessModes:
+          - ReadWriteMany  # Adjust based on your requirements
+        resources:
+          requests:
+            storage: 10Gi  # Adjust the storage size based on your needs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-headless
+  # Add labels and annotations as per your requirements
+spec:
+  clusterIP: None
+  ports:
+    - name: amqp
+      port: 5672
+      protocol: TCP
+      targetPort: 5672
+    - name: http
+      port: 15672
+      protocol: TCP
+      targetPort: 15672
+    - name: prometheus
+      port: 15692
+      protocol: TCP
+      targetPort: 15692
+  selector:
+    # Specify the labels to match the RabbitMQ pods

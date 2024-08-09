@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: buyerservice-deploy
+  labels:
+    app: buyerservice
+spec:
+  replicas: 1
+  #strategy:
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #      maxSurge: 1
+  #      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: buyerservice
+    spec:
+      containers:
+      - name: buyerservice
+        image: pbehague/buyerservice:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4011
+        env:
+         - name: ASPNETCORE_URLS
+           value: http://*:4011
+    selector:
+        matchLabels:
+          app: buyerservice
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: buyerservice
+spec:
+  type: NodePort
+  ports:
+  - port: 4011
+  targetPort: 4011
+  nodePort: 34011
+  selector:
+    app: buyerservice

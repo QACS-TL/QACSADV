@@ -18,11 +18,5 @@
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
     <None Include="propertyservice-deploy.yml" />
-    <None Include="rabbitmq-deploy.yml" />
-    <None Include="sellerservice-deploy.yml" />
-    <None Include="sqlestateagentsellerdata-deploy.yml" />
-    <None Include="sqlestateagentpropertydata-deploy .yml" />
-    <None Include="sqlestateagentbuyerdata-deploy.yml" />
-    <None Include="sqlestateagentbookingdata-deploy.yml" />
   </ItemGroup>
 </Project>

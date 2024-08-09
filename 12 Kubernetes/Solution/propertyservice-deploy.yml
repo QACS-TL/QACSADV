@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: propertyservice-deploy
+  labels:
+    app: propertyservice
+spec:
+  replicas: 1
+  #strategy:
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #      maxSurge: 1
+  #      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: propertyservice
+    spec:
+      containers:
+      - name: propertyservice
+        image: pbehague/propertyservice:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4012
+        env:
+         - name: ASPNETCORE_URLS
+           value: http://*:4012
+    selector:
+        matchLabels:
+          app: propertyservice
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: propertyservice
+spec:
+  type: NodePort
+  ports:
+  - port: 4012
+  targetPort: 4012
+  nodePort: 34012
+  selector:
+    app: propertyservice

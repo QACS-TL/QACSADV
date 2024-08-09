@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sellerservice-deploy
+  labels:
+    app: sellerservice
+spec:
+  replicas: 1
+  #strategy:
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #      maxSurge: 1
+  #      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: sellerservice
+    spec:
+      containers:
+      - name: sellerservice
+        image: pbehague/sellerservice:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4013
+        env:
+         - name: ASPNETCORE_URLS
+           value: http://*:4013
+    selector:
+        matchLabels:
+          app: sellerservice
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sellerservice
+spec:
+  type: NodePort
+  ports:
+  - port: 4013
+  targetPort: 4013
+  nodePort: 34013
+  selector:
+    app: sellerservice
