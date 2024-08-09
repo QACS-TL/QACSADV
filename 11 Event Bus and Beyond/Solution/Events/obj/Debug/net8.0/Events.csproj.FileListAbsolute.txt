@@ -1,0 +1,12 @@
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\bin\Debug\net8.0\Events.deps.json
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\bin\Debug\net8.0\Events.dll
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\bin\Debug\net8.0\Events.pdb
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.AssemblyInfoInputs.cache
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.AssemblyInfo.cs
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.sourcelink.json
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.dll
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\refint\Events.dll
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\Events.pdb
+C:\Users\Admin\Source\Repos\QACSADV\11 Event Bus\Solution\Events\obj\Debug\net8.0\ref\Events.dll
