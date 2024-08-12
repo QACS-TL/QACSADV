@@ -13,41 +13,41 @@ services:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.19.10.201
 
-  sqlestateagentbuyerdata:
-    image:  mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - SA_PASSWORD=PaSSw0rdPaSSw0rd
-      - ACCEPT_EULA=Y
-    container_name: sqlestateagentbuyerdata
-    ports:
-      - "1402:1433"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.202
+  # sqlestateagentbuyerdata:
+  #   image:  mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
+  #     - ACCEPT_EULA=Y
+  #   container_name: sqlestateagentbuyerdata
+  #   ports:
+  #     - "1402:1433"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.202
 
-  sqlestateagentpropertydata:
-    image:  mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - SA_PASSWORD=PaSSw0rdPaSSw0rd
-      - ACCEPT_EULA=Y
-    container_name: sqlestateagentpropertydata
-    ports:
-      - "1403:1433"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.203
+  # sqlestateagentpropertydata:
+  #   image:  mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
+  #     - ACCEPT_EULA=Y
+  #   container_name: sqlestateagentpropertydata
+  #   ports:
+  #     - "1403:1433"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.203
 
-  sqlestateagentsellerdata:
-    image:  mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - SA_PASSWORD=PaSSw0rdPaSSw0rd
-      - ACCEPT_EULA=Y
-    container_name: sqlestateagentsellerdata
-    ports:
-      - "1404:1433"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.204
+  # sqlestateagentsellerdata:
+  #   image:  mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
+  #     - ACCEPT_EULA=Y
+  #   container_name: sqlestateagentsellerdata
+  #   ports:
+  #     - "1404:1433"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.204
 
   rabbitmq:
     image: rabbitmq:latest
@@ -62,49 +62,49 @@ services:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.19.10.205
 
-  buyerservice:
-    image: pbehague/buyerservice
-    environment:
-        - ConnectionString=sqlestateagentdata
-    build:
-      context: .
-      dockerfile: BuyerService/Dockerfile
-    container_name: buyerservice
-    ports:
-    - "3011:3011"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.211
+  # buyerservice:
+  #   image: pbehague/buyerservice
+  #   environment:
+  #       - ConnectionString=sqlestateagentdata
+  #   build:
+  #     context: .
+  #     dockerfile: BuyerService/Dockerfile
+  #   container_name: buyerservice
+  #   ports:
+  #   - "3011:3011"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.211
 
-  sellerservice:
-    image: pbehague/sellerservice
-    build:
-      context: .
-      dockerfile: SellerService/Dockerfile
-    container_name: sellerservice
-    ports:
-    - "3013:3013"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.213
+  # sellerservice:
+  #   image: pbehague/sellerservice
+  #   build:
+  #     context: .
+  #     dockerfile: SellerService/Dockerfile
+  #   container_name: sellerservice
+  #   ports:
+  #   - "3013:3013"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.213
 
-  propertyservice:
-    image: pbehague/propertyservice
-    restart: on-failure
-    environment:
-      - ConnectionString=sqlestateagentdata
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
-    depends_on:
-      - rabbitmq
-    build:
-      context: .
-      dockerfile: PropertyService/Dockerfile
-    container_name: propertyservice
-    ports:
-    - "3012:3012"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.212
+  # propertyservice:
+  #   image: pbehague/propertyservice
+  #   restart: on-failure
+  #   environment:
+  #     - ConnectionString=sqlestateagentdata
+  #     - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+  #   depends_on:
+  #     - rabbitmq
+  #   build:
+  #     context: .
+  #     dockerfile: PropertyService/Dockerfile
+  #   container_name: propertyservice
+  #   ports:
+  #   - "3012:3012"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.19.10.212
 
   bookingservice:
     image: pbehague/bookingservice

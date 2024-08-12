@@ -26,9 +26,9 @@ spec:
         env:
          - name: ASPNETCORE_URLS
            value: http://*:4012
-    selector:
-        matchLabels:
-          app: propertyservice
+  selector:
+    matchLabels:
+      app: propertyservice
 
 ---
 apiVersion: v1
@@ -39,7 +39,7 @@ spec:
   type: NodePort
   ports:
   - port: 4012
-  targetPort: 4012
-  nodePort: 34012
+    targetPort: 4012
+    nodePort: 32012
   selector:
     app: propertyservice

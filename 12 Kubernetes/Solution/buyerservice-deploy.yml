@@ -26,9 +26,9 @@ spec:
         env:
          - name: ASPNETCORE_URLS
            value: http://*:4011
-    selector:
-        matchLabels:
-          app: buyerservice
+  selector:
+    matchLabels:
+      app: buyerservice
 
 ---
 apiVersion: v1
@@ -39,7 +39,7 @@ spec:
   type: NodePort
   ports:
   - port: 4011
-  targetPort: 4011
-  nodePort: 34011
+    targetPort: 4011
+    nodePort: 32011
   selector:
     app: buyerservice
