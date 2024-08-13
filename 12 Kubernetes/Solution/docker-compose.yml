@@ -37,17 +37,17 @@ services:
   #       EstateAgentMicroservicenetwork:
   #           ipv4_address: 172.20.10.203
 
-  # sqlestateagentsellerdata:
-  #   image:  mcr.microsoft.com/mssql/server:2019-latest
-  #   environment:
-  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
-  #     - ACCEPT_EULA=Y
-  #   container_name: sqlestateagentsellerdata
-  #   ports:
-  #     - "1404:1433"
-  #   networks:
-  #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.20.10.204
+  sqlestateagentsellerdata:
+    image:  mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=PaSSw0rdPaSSw0rd
+      - ACCEPT_EULA=Y
+    container_name: sqlestateagentsellerdata
+    ports:
+      - "1404:1433"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.20.10.204
 
   # rabbitmq:
   #   image: rabbitmq:latest

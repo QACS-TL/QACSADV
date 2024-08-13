@@ -22,12 +22,12 @@ spec:
         image: pbehague/sellerservice:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 4013
-        env:
-        - name: ASPNETCORE_URLS
-          value: http://*:4013
-        #  - name: ConnectionStrings__sqlestateagentdata
-        #    value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
+        - containerPort: 3013
+        #env:
+        #- name: ASPNETCORE_URLS
+        #  value: http://*:3013
+        #- name: ConnectionStrings__sqlestateagentdata
+        #  value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
   selector:
     matchLabels:
       app: sellerservice
@@ -40,8 +40,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 4013
-    targetPort: 4013
+  - port: 3013
+    targetPort: 3013
     nodePort: 32013
   selector:
     app: sellerservice

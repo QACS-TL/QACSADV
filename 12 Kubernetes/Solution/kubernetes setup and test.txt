@@ -1,0 +1,29 @@
+kubectl -n kd delete all --all
+
+docker compose build
+
+docker login
+
+docker compose push
+ 
+kubectl -n kd apply -f accountdeployment.yml
+ 
+kubectl -n kd get pods
+####
+  NAME                                        READY   STATUS    RESTARTS   AGE
+sellerservice-deploy-648d88cc9-824d6   1/1     Running   0          29s
+###
+
+kubectl -n kd get services
+####
+NAME                 TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+sellerservice   NodePort   10.111.185.172   <none>        3013:32001/TCP   66s
+####
+
+*** Wanted an external IP address to refer to but not given hence the following:
+
+kubectl port-forward -n kd pods/sellerservice-deploy-648d88cc9-824d6 9023:3013
+####
+Forwarding from 127.0.0.1:9023 -> 3013
+Forwarding from [::1]:9023 -> 3013
+####

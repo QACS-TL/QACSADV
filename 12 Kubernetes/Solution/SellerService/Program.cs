@@ -1,7 +1,7 @@
 
-//using Microsoft.EntityFrameworkCore;
-//using SellerService.Infrastructure;
-//using SellerService.Models;
+using Microsoft.EntityFrameworkCore;
+using SellerService.Infrastructure;
+using SellerService.Models;
 //using System.Reflection.Metadata.Ecma335;
 
 namespace SellerService
@@ -13,9 +13,9 @@ namespace SellerService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            //builder.Services.AddDbContext<SellerContext>(options =>
-            //    options.UseSqlServer(
-            //        builder.Configuration.GetConnectionString("sqlestateagentdata")));
+            builder.Services.AddDbContext<SellerContext>(options =>
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("sqlestateagentdata")));
 
             builder.Services.AddAuthorization();
 
@@ -28,12 +28,12 @@ namespace SellerService
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                //using (var scope = app.Services.CreateScope())
-                //{
-                //    var sellerContext = scope.ServiceProvider.GetRequiredService<SellerContext>();
-                //    sellerContext.Database.EnsureCreated();
-                //    sellerContext.Seed();
-                //}
+                using (var scope = app.Services.CreateScope())
+                {
+                    var sellerContext = scope.ServiceProvider.GetRequiredService<SellerContext>();
+                    sellerContext.Database.EnsureCreated();
+                    sellerContext.Seed();
+                }
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -45,8 +45,8 @@ namespace SellerService
             app.MapGet("/sellerstest",  () =>
                "Hello");
 
-            //app.MapGet("/sellers", async (SellerContext db) =>
-            //    await db.Sellers.ToListAsync());
+            app.MapGet("/sellers", async (SellerContext db) =>
+                await db.Sellers.ToListAsync());
 
             //app.MapGet("/sellers/{id}", async (int id, SellerContext db) =>
             //    await db.Sellers.FindAsync(id)
