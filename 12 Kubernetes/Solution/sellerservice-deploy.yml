@@ -24,10 +24,10 @@ spec:
         ports:
         - containerPort: 4013
         env:
-         - name: ASPNETCORE_URLS
-           value: http://*:4013
-         - name: ConnectionStrings__sqlestateagentdata
-           value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
+        - name: ASPNETCORE_URLS
+          value: http://*:4013
+        #  - name: ConnectionStrings__sqlestateagentdata
+        #    value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
   selector:
     matchLabels:
       app: sellerservice

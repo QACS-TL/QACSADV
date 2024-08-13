@@ -1,0 +1,3 @@
+kubectl create namespace kd
+
+kubectl -n kd apply -f .\sellerservice-deploy.yml

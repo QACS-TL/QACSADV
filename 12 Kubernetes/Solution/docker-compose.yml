@@ -1,17 +1,17 @@
 version: '3.4'
 
 services:
-  sqlestateagentbookingdata:
-    image:  mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - SA_PASSWORD=PaSSw0rdPaSSw0rd
-      - ACCEPT_EULA=Y
-    container_name: sqlestateagentbookingdata
-    ports:
-      - "1401:1433"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.201
+  # sqlestateagentbookingdata:
+  #   image:  mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
+  #     - ACCEPT_EULA=Y
+  #   container_name: sqlestateagentbookingdata
+  #   ports:
+  #     - "1401:1433"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.20.10.201
 
   # sqlestateagentbuyerdata:
   #   image:  mcr.microsoft.com/mssql/server:2019-latest
@@ -23,7 +23,7 @@ services:
   #     - "1402:1433"
   #   networks:
   #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.19.10.202
+  #           ipv4_address: 172.20.10.202
 
   # sqlestateagentpropertydata:
   #   image:  mcr.microsoft.com/mssql/server:2019-latest
@@ -35,7 +35,7 @@ services:
   #     - "1403:1433"
   #   networks:
   #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.19.10.203
+  #           ipv4_address: 172.20.10.203
 
   # sqlestateagentsellerdata:
   #   image:  mcr.microsoft.com/mssql/server:2019-latest
@@ -47,20 +47,20 @@ services:
   #     - "1404:1433"
   #   networks:
   #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.19.10.204
+  #           ipv4_address: 172.20.10.204
 
-  rabbitmq:
-    image: rabbitmq:latest
-    restart: always
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.205
+  # rabbitmq:
+  #   image: rabbitmq:latest
+  #   restart: always
+  #   container_name: rabbitmq
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.20.10.205
 
   # buyerservice:
   #   image: pbehague/buyerservice
@@ -74,19 +74,19 @@ services:
   #   - "3011:3011"
   #   networks:
   #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.19.10.211
+  #           ipv4_address: 172.20.10.211
 
-  # sellerservice:
-  #   image: pbehague/sellerservice
-  #   build:
-  #     context: .
-  #     dockerfile: SellerService/Dockerfile
-  #   container_name: sellerservice
-  #   ports:
-  #   - "3013:3013"
-  #   networks:
-  #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.19.10.213
+  sellerservice:
+    image: pbehague/sellerservice
+    build:
+      context: .
+      dockerfile: SellerService/Dockerfile
+    container_name: sellerservice
+    ports:
+    - "3013:3013"
+    networks:
+        EstateAgentMicroservicenetwork:
+            ipv4_address: 172.20.10.213
 
   # propertyservice:
   #   image: pbehague/propertyservice
@@ -104,28 +104,28 @@ services:
   #   - "3012:3012"
   #   networks:
   #       EstateAgentMicroservicenetwork:
-  #           ipv4_address: 172.19.10.212
+  #           ipv4_address: 172.20.10.212
 
-  bookingservice:
-    image: pbehague/bookingservice
-    restart: on-failure
-    environment:
-      - ConnectionString=sqlestateagentdata
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
-    depends_on:
-      - rabbitmq
-    build:
-      context: .
-      dockerfile: BookingService/Dockerfile
-    container_name: bookingservice
-    ports:
-    - "3010:3010"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.19.10.210
+  # bookingservice:
+  #   image: pbehague/bookingservice
+  #   restart: on-failure
+  #   environment:
+  #     - ConnectionString=sqlestateagentdata
+  #     - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+  #   depends_on:
+  #     - rabbitmq
+  #   build:
+  #     context: .
+  #     dockerfile: BookingService/Dockerfile
+  #   container_name: bookingservice
+  #   ports:
+  #   - "3010:3010"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.20.10.210
 
-volumes:
-    rabbitmq_data:
+# volumes:
+#     rabbitmq_data:
 
 networks:
     EstateAgentMicroservicenetwork:
@@ -133,7 +133,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.19.0.0/16
+                - subnet: 172.20.0.0/16
 
 
 
