@@ -7,8 +7,16 @@ docker compose build
 docker login
 
 docker compose push
- 
+
+kubectl -n kd apply -f sqlestateagentsellerdata-deploy.yml
+kubectl -n kd apply -f sqlestateagentbuyerdata-deploy.yml
+kubectl -n kd apply -f sqlestateagentbookingdata-deploy.yml
+kubectl -n kd apply -f sqlestateagentproperty-deploy.yml
+kubectl -n kd apply -f rabbitmq-deploy.yml
 kubectl -n kd apply -f sellerservice-deploy.yml
+kubectl -n kd apply -f buyerservice-deploy.yml
+kubectl -n kd apply -f bookingservice-deploy.yml
+kubectl -n kd apply -f propertyservice-deploy.yml
  
 kubectl -n kd get pods
 ####
@@ -23,9 +31,29 @@ sellerservice   NodePort   10.111.185.172   <none>        3013:32001/TCP   66s
 ####
 
 *** Wanted an external IP address to refer to but not given hence the following:
+*** One PowerShell window per forwarded port
 
 kubectl port-forward -n kd pods/sellerservice-deploy-648d88cc9-824d6 9023:3013
+
+kubectl port-forward -n kd pods/buyerservice-deploy-648d88cc9-824d6 9021:3011
+
+kubectl port-forward -n kd pods/bookingservice-deploy-648d88cc9-824d6 9020:3010
+
+kubectl port-forward -n kd podspropertyservice-deploy-648d88cc9-824d6 9022:3012
 ####
 Forwarding from 127.0.0.1:9023 -> 3013
 Forwarding from [::1]:9023 -> 3013
 ####
+
+Then use a browser to browse to the following:
+http://http://localhost:9023/sellers
+http://http://localhost:9021/api/buyer/buyers
+http://http://localhost:9020/bookings
+http://http://localhost:9022/properties
+
+If all these work then use Postman to test drive:
+- the addition of a new property. (note the returned property id
+- the addition of 3 bookings for the new property
+- the deletion of the property.
+- test to ensure the property and its associated bookings have been removed from the associated databases 
+
