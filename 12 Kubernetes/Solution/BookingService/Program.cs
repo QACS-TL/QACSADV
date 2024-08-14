@@ -47,14 +47,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var bookingContext = scope.ServiceProvider.GetRequiredService<BookingContext>();
-        bookingContext.Database.EnsureCreated();
-        bookingContext.Seed();
-    }
+
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var bookingContext = scope.ServiceProvider.GetRequiredService<BookingContext>();
+    bookingContext.Database.EnsureCreated();
+    bookingContext.Seed();
 }
 
 app.MapGet("/bookings", async (BookingContext db) =>
@@ -71,20 +73,20 @@ app.MapPost("/bookings", async (Booking booking, BookingContext db) =>
     var http = new HttpClient();
 
     //Check to see if PropertyId is valid
-    string url = $"http://propertyservice:3012/properties/{booking.PropertyId}";
-    HttpResponseMessage response = await http.GetAsync(url);
-    string responseJson = response.Content.ReadAsStringAsync().Result;
-    dynamic responseData = JsonConvert.DeserializeObject(responseJson);
-    if (responseData == null || responseData["id"] != booking.PropertyId)
-        return Results.NotFound();
+    //string url = $"http://propertyservice:3012/properties/{booking.PropertyId}";
+    //HttpResponseMessage response = await http.GetAsync(url);
+    //string responseJson = response.Content.ReadAsStringAsync().Result;
+    //dynamic responseData = JsonConvert.DeserializeObject(responseJson);
+    //if (responseData == null || responseData["id"] != booking.PropertyId)
+    //    return Results.NotFound();
 
-    //Check to see if BuyerId is valid
-    url = $"http://buyerservice:3011/api/Buyer/buyers/{booking.BuyerId}";
-    response = await http.GetAsync(url);
-    responseJson = response.Content.ReadAsStringAsync().Result;
-    responseData = JsonConvert.DeserializeObject(responseJson);
-    if (responseData == null || responseData["id"] != booking.BuyerId)
-        return Results.NotFound();
+    ////Check to see if BuyerId is valid
+    //url = $"http://buyerservice:3011/api/Buyer/buyers/{booking.BuyerId}";
+    //response = await http.GetAsync(url);
+    //responseJson = response.Content.ReadAsStringAsync().Result;
+    //responseData = JsonConvert.DeserializeObject(responseJson);
+    //if (responseData == null || responseData["id"] != booking.BuyerId)
+    //    return Results.NotFound();
 
     db.Bookings.Add(booking);
     await db.SaveChangesAsync();

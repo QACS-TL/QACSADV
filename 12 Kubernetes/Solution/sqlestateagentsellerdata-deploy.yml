@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
- name: sqlestateagentsellerdata-d # name of the StatefulSet workload, the SQL Server instance name is derived from this. We suggest to keep this name same as the .spec.template.metadata.labels, .spec.selector.matchLabels and .spec.serviceName to avoid confusion.
+ name: sqlestateagentsellerdata # name of the StatefulSet workload, the SQL Server instance name is derived from this. We suggest to keep this name same as the .spec.template.metadata.labels, .spec.selector.matchLabels and .spec.serviceName to avoid confusion.
 spec:
  # serviceName: "sqlestateagentsellerdata" # serviceName is the name of the service that governs this StatefulSet. This service must exist before the StatefulSet, and is responsible for the network identity of the set.
  replicas: 1 # only one pod, with one SQL Server instance deployed.
@@ -47,11 +47,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sqlestateagentsellerdata
-  namespace: kd
 spec:
   type: NodePort
   # selector:
   #   statefulset.kubernetes.io/pod-name: sqlestateagentsellerdata
+  selector:
+    app: sqlestateagentsellerdata
   ports:
     - protocol: TCP
       port: 1433

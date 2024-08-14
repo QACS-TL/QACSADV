@@ -28,14 +28,16 @@ namespace SellerService
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                using (var scope = app.Services.CreateScope())
-                {
-                    var sellerContext = scope.ServiceProvider.GetRequiredService<SellerContext>();
-                    sellerContext.Database.EnsureCreated();
-                    sellerContext.Seed();
-                }
+
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var sellerContext = scope.ServiceProvider.GetRequiredService<SellerContext>();
+                sellerContext.Database.EnsureCreated();
+                sellerContext.Seed();
             }
 
             app.UseHttpsRedirection();
@@ -48,54 +50,54 @@ namespace SellerService
             app.MapGet("/sellers", async (SellerContext db) =>
                 await db.Sellers.ToListAsync());
 
-            //app.MapGet("/sellers/{id}", async (int id, SellerContext db) =>
-            //    await db.Sellers.FindAsync(id)
-            //        is Seller seller
-            //            ? Results.Ok(seller)
-            //            : Results.NotFound());
+            app.MapGet("/sellers/{id}", async (int id, SellerContext db) =>
+                await db.Sellers.FindAsync(id)
+                    is Seller seller
+                        ? Results.Ok(seller)
+                        : Results.NotFound());
 
-            //app.MapGet("/sellers/{surname, firstname}", async (string surname, string firstname, SellerContext db) =>
-            //    await db.Sellers.FirstOrDefaultAsync(s => s.Surname == surname && s.FirstName == firstname)
-            //        is Seller seller
-            //            ? Results.Ok(seller)
-            //            : Results.NotFound());
+            app.MapGet("/sellers/{surname, firstname}", async (string surname, string firstname, SellerContext db) =>
+                await db.Sellers.FirstOrDefaultAsync(s => s.Surname == surname && s.FirstName == firstname)
+                    is Seller seller
+                        ? Results.Ok(seller)
+                        : Results.NotFound());
 
-            //app.MapPost("/sellers", async (Seller seller, SellerContext db) =>
-            //{
-            //    db.Sellers.Add(seller);
-            //    await db.SaveChangesAsync();
+            app.MapPost("/sellers", async (Seller seller, SellerContext db) =>
+            {
+                db.Sellers.Add(seller);
+                await db.SaveChangesAsync();
 
-            //    return Results.Created($"/sellers/{seller.Id}", seller);
-            //});
+                return Results.Created($"/sellers/{seller.Id}", seller);
+            });
 
-            //app.MapPut("/sellers/{id}", async (int id, Seller inputSeller, SellerContext db) =>
-            //{
-            //    var seller = await db.Sellers.FindAsync(id);
+            app.MapPut("/sellers/{id}", async (int id, Seller inputSeller, SellerContext db) =>
+            {
+                var seller = await db.Sellers.FindAsync(id);
 
-            //    if (seller is null) return Results.NotFound();
+                if (seller is null) return Results.NotFound();
 
-            //    seller.Surname = inputSeller.Surname;
-            //    seller.FirstName = inputSeller.FirstName;
-            //    seller.Address = inputSeller.Address;
-            //    seller.Postcode = inputSeller.Postcode;
-            //    seller.Phone = inputSeller.Phone;
+                seller.Surname = inputSeller.Surname;
+                seller.FirstName = inputSeller.FirstName;
+                seller.Address = inputSeller.Address;
+                seller.Postcode = inputSeller.Postcode;
+                seller.Phone = inputSeller.Phone;
 
-            //    await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
 
-            //    return Results.NoContent();
-            //});
+                return Results.NoContent();
+            });
 
-            //app.MapDelete("/sellers/{id}", async (int id, SellerContext db) =>
-            //{
-            //    if (await db.Sellers.FindAsync(id) is Seller seller)
-            //    {
-            //        db.Sellers.Remove(seller);
-            //        await db.SaveChangesAsync();
-            //        return Results.NoContent();
-            //    }
+            app.MapDelete("/sellers/{id}", async (int id, SellerContext db) =>
+            {
+                if (await db.Sellers.FindAsync(id) is Seller seller)
+                {
+                    db.Sellers.Remove(seller);
+                    await db.SaveChangesAsync();
+                    return Results.NoContent();
+                }
 
-            //    return Results.NotFound();
-            //});
+                return Results.NotFound();
+            });
 
             app.Run();
         }

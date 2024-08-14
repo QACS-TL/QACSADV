@@ -48,14 +48,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var propertyContext = scope.ServiceProvider.GetRequiredService<PropertyContext>();
-        propertyContext.Database.EnsureCreated();
-        propertyContext.Seed();
-    }
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var propertyContext = scope.ServiceProvider.GetRequiredService<PropertyContext>();
+    propertyContext.Database.EnsureCreated();
+    propertyContext.Seed();
 }
 
 app.MapGet("/properties", async (PropertyContext db) =>

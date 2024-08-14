@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sellerservice-deploy
-  labels:
-    app: sellerservice
+  name: sellerservice
+  #labels:
+  #  app: sellerservice
 spec:
   replicas: 1
   #strategy:
@@ -23,11 +23,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 3013
-        #env:
-        #- name: ASPNETCORE_URLS
-        #  value: http://*:3013
-        #- name: ConnectionStrings__sqlestateagentdata
-        #  value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: http://*:3013
+        - name: ConnectionStrings__sqlestateagentdata
+          value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
   selector:
     matchLabels:
       app: sellerservice
@@ -40,7 +42,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 3013
+  - protocol: TCP
+    port: 3013
     targetPort: 3013
     nodePort: 32013
   selector:

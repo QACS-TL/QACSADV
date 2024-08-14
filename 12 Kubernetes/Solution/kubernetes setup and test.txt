@@ -1,3 +1,5 @@
+kubectl create namespace kd
+
 kubectl -n kd delete all --all
 
 docker compose build
@@ -6,7 +8,7 @@ docker login
 
 docker compose push
  
-kubectl -n kd apply -f accountdeployment.yml
+kubectl -n kd apply -f sellerservice-deploy.yml
  
 kubectl -n kd get pods
 ####
