@@ -116,6 +116,8 @@ services:
     restart: on-failure
     environment:
       - ConnectionString=sqlestateagentdata
+      - PROPERTYSERVICE=propertyservice
+      - BUYERSERVICE=buyerservice
       # - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     build:
       context: .
