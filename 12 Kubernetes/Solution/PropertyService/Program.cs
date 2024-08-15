@@ -9,21 +9,8 @@ using Events;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; //Needed for Cors
-                                                        // Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                policy =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                    //policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
-                });
-});
 
 builder.Services.AddDbContext<PropertyContext>(options =>
                 options.UseSqlServer(

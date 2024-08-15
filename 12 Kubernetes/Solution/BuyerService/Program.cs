@@ -9,20 +9,11 @@ namespace BuyerService
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; //Needed for Cors
-            // Add services to the container.
+
+            //// Add services to the container.
 
             builder.Services.AddControllers();
 
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                            policy =>
-                            {
-                                policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                                //policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
-                            });
-            });
 
             builder.Services.AddDbContext<BuyerContext>(options =>
                 options.UseSqlServer(

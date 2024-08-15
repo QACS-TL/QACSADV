@@ -24,9 +24,9 @@ spec:
           - name: ConnectionStrings__sqlestateagentdata
             value: "Server=sqlestateagentbookingdata;Database=EABooking;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
           - name: PROPERTYSERVICE
-            value: propertyservice
+            value: http://propertyservice:3012
           - name: BUYERSERVICE
-            value: buyerservice
+            value: http://buyerservice:3011
   selector:
     matchLabels:
       app: bookingservice
