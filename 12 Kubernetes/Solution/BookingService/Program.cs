@@ -11,6 +11,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddControllers();
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; //Needed for Cors
+                                                        // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    //policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                });
+});
+
 builder.Services.AddDbContext<BookingContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("sqlestateagentdata")));
@@ -77,19 +89,19 @@ app.MapPost("/bookings", async (Booking booking, BookingContext db) =>
     if (PROPERTYSERVICE == null)
         url = $"http://propertyservice:3012/properties/{booking.PropertyId}";
     else
-        url = $"{PROPERTYSERVICE}/{booking.PropertyId}";
+        url = $"{PROPERTYSERVICE}/properties/{booking.PropertyId}";
     HttpResponseMessage response = await http.GetAsync(url);
     string responseJson = response.Content.ReadAsStringAsync().Result;
     dynamic responseData = JsonConvert.DeserializeObject(responseJson);
     if (responseData == null || responseData["id"] != booking.PropertyId)
         return Results.NotFound();
 
-    string BOOKINGSERVICE = Environment.GetEnvironmentVariable("BOOKINGSERVICE");
+    string BUYERSERVICE = Environment.GetEnvironmentVariable("BUYERSERVICE");
     //Check to see if BuyerId is valid
-    if (BOOKINGSERVICE == null)
+    if (BUYERSERVICE == null)
         url = $"http://buyerservice:3011/api/Buyer/buyers/{booking.BuyerId}";
     else
-        url = $"{BOOKINGSERVICE}/api/Buyer/buyers/{booking.BuyerId}";
+        url = $"{BUYERSERVICE}/api/Buyer/buyers/{booking.BuyerId}";
     response = await http.GetAsync(url);
     responseJson = response.Content.ReadAsStringAsync().Result;
     responseData = JsonConvert.DeserializeObject(responseJson);

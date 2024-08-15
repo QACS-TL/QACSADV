@@ -1,6 +1,6 @@
-#@BuyerService_HostAddress = http://localhost:5281
+@BuyerService_HostAddress = http://localhost:5281
 
-#GET {{BuyerService_HostAddress}}/weatherforecast/
-#Accept: application/json
+GET {{BuyerService_HostAddress}}/weatherforecast/
+Accept: application/json
 
 ###

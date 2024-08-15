@@ -37,17 +37,17 @@ services:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.20.10.203
 
-  sqlestateagentsellerdata:
-    image:  mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - SA_PASSWORD=PaSSw0rdPaSSw0rd
-      - ACCEPT_EULA=Y
-    container_name: sqlestateagentsellerdata
-    ports:
-      - "1404:1433"
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.20.10.204
+  # sqlestateagentsellerdata:
+  #   image:  mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     - SA_PASSWORD=PaSSw0rdPaSSw0rd
+  #     - ACCEPT_EULA=Y
+  #   container_name: sqlestateagentsellerdata
+  #   ports:
+  #     - "1404:1433"
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.20.10.204
 
   rabbitmq:
     image: rabbitmq:latest
@@ -78,19 +78,19 @@ services:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.20.10.211
 
-  sellerservice:
-    image: pbehague/sellerservice
-    build:
-      context: .
-      dockerfile: SellerService/Dockerfile
-    container_name: sellerservice
-    ports:
-    - "3013:3013"
-    depends_on: 
-    - sqlestateagentsellerdata
-    networks:
-        EstateAgentMicroservicenetwork:
-            ipv4_address: 172.20.10.213
+  # sellerservice:
+  #   image: pbehague/sellerservice
+  #   build:
+  #     context: .
+  #     dockerfile: SellerService/Dockerfile
+  #   container_name: sellerservice
+  #   ports:
+  #   - "3013:3013"
+  #   depends_on: 
+  #   - sqlestateagentsellerdata
+  #   networks:
+  #       EstateAgentMicroservicenetwork:
+  #           ipv4_address: 172.20.10.213
 
   propertyservice:
     image: pbehague/propertyservice
@@ -116,8 +116,8 @@ services:
     restart: on-failure
     environment:
       - ConnectionString=sqlestateagentdata
-      - PROPERTYSERVICE=propertyservice
-      - BUYERSERVICE=buyerservice
+      - PROPERTYSERVICE=http://propertyservice:3012
+      - BUYERSERVICE=http://buyerservice:3011
       # - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     build:
       context: .
@@ -127,7 +127,9 @@ services:
     - "3010:3010"
     depends_on: 
     - rabbitmq
-    - sqlestateagentbookingdata 
+    - sqlestateagentbookingdata
+    - propertyservice
+    - buyerservice 
     networks:
         EstateAgentMicroservicenetwork:
             ipv4_address: 172.20.10.210
