@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sellerservice
+  #labels:
+  #  app: sellerservice
+spec:
+  replicas: 1
+  #strategy:
+  #  type: RollingUpdate
+  #  rollingUpdate:
+  #      maxSurge: 1
+  #      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: sellerservice
+    spec:
+      containers:
+      - name: sellerservice
+        image: pbehague/sellerservice:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3013
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: http://*:3013
+        - name: ConnectionStrings__sqlestateagentdata
+          value: "Server=sqlestateagentsellerdata;Database=EASeller;User Id=sa;Password=PaSSw0rdPaSSw0rd;MultipleActiveResultSets=true;Encrypt=False;TrustServerCertificate=True"
+  selector:
+    matchLabels:
+      app: sellerservice
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sellerservice
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 3013
+    targetPort: 3013
+    nodePort: 32013
+  selector:
+    app: sellerservice
