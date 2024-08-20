@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: sqlestateagentbookingdata 
+spec:
+ replicas: 1 
+ selector:
+  matchLabels:
+   app: sqlestateagentbookingdata 
+ template:
+  metadata:
+   labels:
+    app: sqlestateagentbookingdata 
+  spec:
+   containers:
+   - name: sqlestateagentbookingdata 
+     image: mcr.microsoft.com/mssql/server:2019-latest
+     ports:
+     - containerPort: 1433
+     env:
+     - name: ACCEPT_EULA
+       value: "Y"
+     - name: SA_PASSWORD
+       value: "PaSSw0rdPaSSw0rd"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlestateagentbookingdata
+spec:
+  type: NodePort
+  selector:
+    app: sqlestateagentbookingdata
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+      name: tcpsql

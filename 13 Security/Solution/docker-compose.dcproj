@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <DockerPublishLocally>False</DockerPublishLocally>
+    <ProjectGuid>6379ad2d-aa75-4c2b-9fc9-fbf43ca758e5</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
+    <DockerServiceName>buyerservice</DockerServiceName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="bookingservice-deploy.yml" />
+    <None Include="buyerservice-deploy.yml" />
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+    <None Include="propertyservice-deploy.yml" />
+    <None Include="rabbitmq-deploy.yml" />
+    <None Include="sellerservice-deploy.yml" />
+    <None Include="sqlestateagentsellerdata-deploy.yml" />
+    <None Include="sqlestateagentpropertydata-deploy.yml" />
+    <None Include="sqlestateagentbuyerdata-deploy.yml" />
+    <None Include="sqlestateagentbookingdata-deploy.yml" />
+  </ItemGroup>
+</Project>
